@@ -19,6 +19,7 @@ def CA_atoms(clean_pdb):
             fout.write(CA_lines[i])
 
     fin.close()
+    fout.close()
     return prot_CA
 
 
@@ -43,6 +44,8 @@ def clean_SS(out_SS):
             fout.write(line)
         else:
             pass
+
+    fin.close()
     fout.close()
     return clean_Stride
 
@@ -79,6 +82,7 @@ def loop_region(clean_ss):
         else:
             pass
 
+    fin1.close()
     return start_res, end_res
 
 
@@ -118,6 +122,7 @@ def distance(prot_CA, start_res, end_res, clean_pdb):
             fout.write(tmp)
 
     fout.close()
+    fin2.close()
     return loops
 
 
@@ -137,4 +142,6 @@ def checkDist(loops, clean_pdb):
                 temp = "%4d" % int(t[0]) + "%8.3f" % float(t[-1]) + "%6s" % ('ERROR') + "\n"
                 fout.write(temp)
 
+    fin.close()
+    fout.close()
     return check_file
