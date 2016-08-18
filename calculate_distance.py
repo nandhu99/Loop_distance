@@ -54,8 +54,8 @@ def loop_region(clean_ss):
     start_res = []
     for i in range(0, (len(lines) - 1)):
         j = i + 1
-        if lines[i][24] == 'E' or lines[i][24] == 'H':
-            if lines[j][24] == 'C' or lines[j][24] == 'T':
+        if lines[i][24] == 'E' or lines[i][24] == 'H' or lines[i][24] == 'G':
+            if lines[j][24] == 'C' or lines[j][24] == 'T' or lines[j][24] == 'B':
                 if int(lines[j][11:15]) < len(lines):
                     start_res.append(int(lines[i][11:15]))
                 else:
@@ -68,8 +68,8 @@ def loop_region(clean_ss):
     end_res = []
     for i in range(1, len(lines)):
         j = i - 1
-        if lines[j][24] == 'C' or lines[j][24] == 'T':
-            if lines[i][24] == 'E' or lines[i][24] == 'H':
+        if lines[j][24] == 'C' or lines[j][24] == 'T' or lines[j][24] == 'B':
+            if lines[i][24] == 'E' or lines[i][24] == 'H' or lines[i][24] == 'G':
                 if int(lines[j][11:15]) > 1:
                     end_res.append(int(lines[i][11:15]))
                 else:
