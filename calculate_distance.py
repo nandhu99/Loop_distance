@@ -119,3 +119,22 @@ def distance(prot_CA, start_res, end_res, clean_pdb):
 
     fout.close()
     return loops
+
+
+def checkDist(loops, clean_pdb):
+    with open(loops) as fin:
+        lines = fin.readlines()
+
+    check_file = clean_pdb[:-4] + '_loop_check.txt'
+    with open(check_file, 'w') as fout:
+        for line in lines:
+            t = line.split()
+            ideal_dist = float(t[0]) * 3.8
+            if float(ideal_dist) >= float(t[-1]):
+                temp = "%4d" % int(t[0]) + "%8.3f" % float(t[-1]) + "%6s" % ('OK') + "\n"
+                fout.write(temp)
+            else:
+                temp = "%4d" % int(t[0]) + "%8.3f" % float(t[-1]) + "%6s" % ('ERROR') + "\n"
+                fout.write(temp)
+
+    return check_file
