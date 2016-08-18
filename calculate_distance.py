@@ -35,7 +35,7 @@ def clean_SS(out_SS):
     with open(out_SS) as fin:
         lines = fin.readlines()
 
-    clean_Stride = 'clean_' + out_SS
+    clean_Stride = out_SS[:-3] + '_clean.ss'
     fout = open(clean_Stride, 'w')
 
     for line in lines:
