@@ -54,11 +54,13 @@ def loop_region(clean_ss):
     with open(clean_ss) as fin1:
         lines = fin1.readlines()
 
+    SS = ['E', 'H', 'G', 'e', 'h', 'g']
+    non_SS = ['C', 'T', 'B', 'c', 't', 'b']
     start_res = []
     for i in range(0, (len(lines) - 1)):
         j = i + 1
-        if lines[i][24] == 'E' or lines[i][24] == 'H' or lines[i][24] == 'G':
-            if lines[j][24] == 'C' or lines[j][24] == 'T' or lines[j][24] == 'B':
+        if lines[i][24]  in SS:
+            if lines[j][24]  in non_SS:
                 if int(lines[j][11:15]) < len(lines):
                     start_res.append(int(lines[i][11:15]))
                 else:
@@ -71,8 +73,8 @@ def loop_region(clean_ss):
     end_res = []
     for i in range(1, len(lines)):
         j = i - 1
-        if lines[j][24] == 'C' or lines[j][24] == 'T' or lines[j][24] == 'B':
-            if lines[i][24] == 'E' or lines[i][24] == 'H' or lines[i][24] == 'G':
+        if lines[j][24]  in non_SS:
+            if lines[i][24]  in SS:
                 if int(lines[j][11:15]) > 1:
                     end_res.append(int(lines[i][11:15]))
                 else:
@@ -81,6 +83,16 @@ def loop_region(clean_ss):
                 pass
         else:
             pass
+
+    if len(end_res) >= len(start_res):
+        for i in range(0, (len(start_res) - 1)):
+            if start_res[i] > end_res[i]:
+                del end_res[i]
+
+    if len(start_res) > len(end_res):
+        for i in range(0, len(end_res)):
+            if start_res[-1] > end_res[-1]:
+                del start_res[-1]
 
     fin1.close()
     return start_res, end_res
@@ -101,16 +113,19 @@ def distance(prot_CA, start_res, end_res, clean_pdb):
         for i in range(0, len(start_res)):
             if int(line[22:26]) == start_res[i]:
                 start_line.append(line)
-
+            else:
+                pass
+        for i in range(0,len(end_res)):
             if int(line[22:26]) == end_res[i]:
                 end_line.append(line)
             else:
                 pass
 
+
     loop_length = []
     loop_dist = []
     for i in range(0, len(start_line)):
-        loop_length.append(abs(int(end_line[i][22:26]) - int(start_line[i][22:26])))
+        loop_length.append((int(end_line[i][22:26]) - int(start_line[i][22:26])) - 1)
         d = dist_2pts(float(start_line[i][30:38]), float(start_line[i][38:46]), float(start_line[i][46:54]),
                       float(end_line[i][30:38]), float(end_line[i][38:46]), float(end_line[i][46:54]))
         loop_dist.append(float(d))
